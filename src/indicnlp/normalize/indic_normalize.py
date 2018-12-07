@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 # Copyright Anoop Kunchukuttan 2013 - present
 #
 # This file is part of Indic NLP Library.
@@ -21,6 +23,7 @@
 # @author Anoop Kunchukuttan 
 #
 
+import argparse
 import sys, codecs, string, itertools, re
 
 class NormalizerI(object):
@@ -554,29 +557,17 @@ class IndicNormalizerFactory(object):
 
 
 if __name__ == '__main__': 
+  parser = argparse.ArgumentParser()
+  parser.add_argument("-l", "--language", required=True)
+  parser.add_argument("-n", "--remove-nuktas", action="store_true", default=False)
+  args = parser.parse_args()
+  ifile = codecs.getreader("utf-8")(sys.stdin)
+  ofile = codecs.getwriter("utf-8")(sys.stdout)
 
-    if len(sys.argv)<4:
-        print "Usage: python normalize.py <infile> <outfile> <language> [<replace_nukta(True,False>]"
-        sys.exit(1)
-
-    language=sys.argv[3]
-    remove_nuktas=False
-    if len(sys.argv)>=5:
-        remove_nuktas=bool(sys.argv[4])
-
-    # create normalizer
-    factory=IndicNormalizerFactory()
-    normalizer=factory.get_normalizer(language,remove_nuktas)
-
-    # DO normalization 
-    with codecs.open(sys.argv[1],'r','utf-8') as ifile:
-        with codecs.open(sys.argv[2],'w','utf-8') as ofile:
-            for line in ifile.readlines():
-                normalized_line=normalizer.normalize(line)
-                ofile.write(normalized_line)
+  # create normalizer
+  factory=IndicNormalizerFactory()
+  normalizer=factory.get_normalizer(args.language,args.remove_nuktas)
+  for line in ifile:
+    normalized_line = normalizer.normalize(line)
+    ofile.write(normalized_line)    
    
-    ## gather status about normalization 
-    #with codecs.open(sys.argv[1],'r','utf-8') as ifile:
-    #    normalizer=DevanagariNormalizer()
-    #    text=string.join(ifile.readlines(),sep='')
-    #    normalizer.get_char_stats(text)

@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 
 # Copyright Anoop Kunchukuttan 2014 - present
 #
@@ -22,6 +23,7 @@
 # @author Anoop Kunchukuttan 
 #
 
+import argparse
 import string, re, sys, codecs
 
 triv_tokenizer_indic_pat=re.compile(ur'(['+string.punctuation+ur'\u0964\u0965'+ur'])')
@@ -57,13 +59,11 @@ def trivial_tokenize(s,lang='hi'):
         return trivial_tokenize_indic(s)
 
 if __name__ == '__main__': 
-
-    if len(sys.argv)<4:
-        print "Usage: python indic_tokenize.py <infile> <outfile> <language>"
-        sys.exit(1)
-
-    with codecs.open(sys.argv[1],'r','utf-8') as ifile:
-        with codecs.open(sys.argv[2],'w','utf-8') as ofile:
-            for line in ifile:
-                tokenized_line=string.join(trivial_tokenize(line,sys.argv[3]),sep=' ')
-                ofile.write(tokenized_line)
+  parser = argparse.ArgumentParser()
+  parser.add_argument("-l", "--language", required=True)
+  args = parser.parse_args()
+  ifile = codecs.getreader("utf-8")(sys.stdin)
+  ofile = codecs.getwriter("utf-8")(sys.stdout)
+  for line in ifile:
+    tokenized_line = string.join(trivial_tokenize(line,args.language),sep=' ')
+    ofile.write(tokenized_line)    
