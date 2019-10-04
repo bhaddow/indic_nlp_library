@@ -18,6 +18,7 @@
 
 import pandas as pd
 import numpy as np
+import os
 
 from indicnlp import common
 from indicnlp.common import IndicNlpException
@@ -109,8 +110,8 @@ def init():
 
     global ALL_PHONETIC_DATA, ALL_PHONETIC_VECTORS, TAMIL_PHONETIC_DATA, TAMIL_PHONETIC_VECTORS, PHONETIC_VECTOR_LENGTH, PHONETIC_VECTOR_START_OFFSET
 
-    ALL_PHONETIC_DATA=pd.read_csv(common.get_resources_path()+'/script/all_script_phonetic_data.csv',encoding='utf-8')    
-    TAMIL_PHONETIC_DATA=pd.read_csv(common.get_resources_path()+'/script/tamil_script_phonetic_data.csv',encoding='utf-8')    
+    ALL_PHONETIC_DATA=pd.read_csv(os.path.join(common.get_resources_path(),'script','all_script_phonetic_data.csv'),encoding='utf-8')    
+    TAMIL_PHONETIC_DATA=pd.read_csv(os.path.join(common.get_resources_path(),'script','tamil_script_phonetic_data.csv'),encoding='utf-8')    
 
     ALL_PHONETIC_VECTORS= ALL_PHONETIC_DATA.ix[:,PHONETIC_VECTOR_START_OFFSET:].as_matrix()
     TAMIL_PHONETIC_VECTORS=TAMIL_PHONETIC_DATA.ix[:,PHONETIC_VECTOR_START_OFFSET:].as_matrix()
@@ -118,7 +119,7 @@ def init():
     PHONETIC_VECTOR_LENGTH=ALL_PHONETIC_VECTORS.shape[1]
 
 def is_supported_language(lang): 
-    return lang in li.SCRIPT_RANGES.keys()
+    return lang in list(li.SCRIPT_RANGES.keys())
 
 def get_offset(c,lang): 
     if not is_supported_language(lang): 
@@ -131,7 +132,7 @@ def offset_to_char(off,lang):
     """
     if not is_supported_language(lang): 
         raise IndicNlpException('Language {}  not supported'.format(lang))
-    return unichr(off+li.SCRIPT_RANGES[lang][0])
+    return chr(off+li.SCRIPT_RANGES[lang][0])
 
 def is_indiclang_char(c,lang): 
     """

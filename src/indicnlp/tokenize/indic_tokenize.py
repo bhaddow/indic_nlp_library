@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 
 # Copyright Anoop Kunchukuttan 2014 - present
 #
@@ -23,13 +22,16 @@
 # @author Anoop Kunchukuttan 
 #
 
-import argparse
 import string, re, sys, codecs
 
-triv_tokenizer_indic_pat=re.compile(ur'(['+string.punctuation+ur'\u0964\u0965'+ur'])')
-triv_tokenizer_urdu_pat=re.compile(ur'(['+string.punctuation+ur'\u0609\u060A\u060C\u061E\u066A\u066B\u066C\u066D\u06D4'+ur'])')
+from indicnlp.common import IndicNlpException
 
+### tokenizer patterns 
+triv_tokenizer_indic_pat=re.compile(r'(['+string.punctuation+r'\u0964\u0965'+r'])')
+triv_tokenizer_urdu_pat=re.compile(r'(['+string.punctuation+r'\u0609\u060A\u060C\u061E\u066A\u066B\u066C\u066D\u06D4'+r'])')
 
+## date, numbers, section/article numbering
+pat_num_seq=re.compile(r'([0-9]+ [,.:/] )+[0-9]+')
 
 def trivial_tokenize_indic(s): 
     """
@@ -38,7 +40,25 @@ def trivial_tokenize_indic(s):
     returns a list of tokens   
     """
     tok_str=triv_tokenizer_indic_pat.sub(r' \1 ',s.replace('\t',' '))
-    return re.sub(r'[ ]+',u' ',tok_str).strip(' ').split(' ')
+#     return re.sub(r'[ ]+',' ',tok_str).strip(' ').split(' ')
+
+    s=re.sub(r'[ ]+',' ',tok_str).strip(' ')
+    
+    # do not tokenize numbers and dates
+    new_s=''
+    prev=0
+    for m in pat_num_seq.finditer(s):
+        start=m.start()
+        end=m.end()
+        if start>prev:
+            new_s=new_s+s[prev:start]
+            new_s=new_s+s[start:end].replace(' ','')
+            prev=end
+   
+    new_s=new_s+s[prev:]
+    s=new_s
+    
+    return s.split(' ')
 
 def trivial_tokenize_urdu(s): 
     """
@@ -47,7 +67,7 @@ def trivial_tokenize_urdu(s):
     returns a list of tokens   
     """
     tok_str=triv_tokenizer_urdu_pat.sub(r' \1 ',s.replace('\t',' '))
-    return re.sub(r'[ ]+',u' ',tok_str).strip(' ').split(' ')
+    return re.sub(r'[ ]+',' ',tok_str).strip(' ').split(' ')
 
 def trivial_tokenize(s,lang='hi'): 
     """
@@ -59,11 +79,13 @@ def trivial_tokenize(s,lang='hi'):
         return trivial_tokenize_indic(s)
 
 if __name__ == '__main__': 
-  parser = argparse.ArgumentParser()
-  parser.add_argument("-l", "--language", required=True)
-  args = parser.parse_args()
-  ifile = codecs.getreader("utf-8")(sys.stdin)
-  ofile = codecs.getwriter("utf-8")(sys.stdout)
-  for line in ifile:
-    tokenized_line = string.join(trivial_tokenize(line,args.language),sep=' ')
-    ofile.write(tokenized_line)    
+
+    if len(sys.argv)<4:
+        print("Usage: python indic_tokenize.py <infile> <outfile> <language>")
+        sys.exit(1)
+
+    with codecs.open(sys.argv[1],'r','utf-8') as ifile:
+        with codecs.open(sys.argv[2],'w','utf-8') as ofile:
+            for line in ifile:
+                tokenized_line=' '.join(trivial_tokenize(line,sys.argv[3]))
+                ofile.write(tokenized_line)
