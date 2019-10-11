@@ -22,7 +22,9 @@
 #
 
 
+import argparse
 import re
+import sys
 
 from indicnlp.transliterate import unicode_transliterate
 
@@ -152,3 +154,35 @@ def sentence_split(text,lang,delim_pat=DELIM_PAT): ## New signature
         final_sentences.append(sen_buffer)
     
     return final_sentences
+
+
+if __name__ == '__main__': 
+
+    if len(sys.argv)<4:
+        print("Usage: python sentence_tokenize.py <infile> <outfile> <language>")
+        print("       Set file to - for stdin/stdout")
+        sys.exit(1)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("infile", type = argparse.FileType('r', encoding="utf8"),  metavar='INFILE')
+    parser.add_argument("outfile", type = argparse.FileType('w', encoding="utf8"),  metavar='OUTFILE')
+    parser.add_argument("language", metavar='LANGUAGE')
+    args = parser.parse_args()
+
+
+    text = ""
+    while True:
+        line = args.infile.readline()
+        stripped = line.strip()
+        if not stripped:
+            if text: 
+                split = sentence_split(text, args.language)
+                for split_line in split:
+                    print(split_line, file=args.outfile)
+                text = ""
+            if not line:
+                break
+            else:
+                print("", file=args.outfile)
+            
+        text = text + " " + stripped
+
