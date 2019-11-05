@@ -146,7 +146,7 @@ def main():
       print(file=ofh)
 
       print("#phonetics", file=ofh)
-      for key,nbp in phonetics.get(lang,{}).items():
+      for key,nbp in sorted(phonetics.get(lang,{}).items()):
         print("# " + key[:-1], file=ofh)
         print(nbp[:-1], file=ofh)
       print(file=ofh)
