@@ -526,41 +526,29 @@ gu_2_eng_phonetics = {'A':['એ',], # checked by Faheem
 
 
 
-ta_2_eng_phonetics ={'A': [''],# Is Marathi the same?
-                     'B': [''],
-                     'C': [''],
-                     'D': [''],
-                     'E': [''],
-                     'F': [''],
-                     'G': [''],
-                     'H': [''],
-                     'I': [''],
-                     'J': [''],
-                     'K': [''],
-                     'L': [''],
-                     'M': [''],
-                     'N': [''],
-                     'O': [''],
-                     'P': [''],
-                     'Q': [''],
-                     'R': [''],
-                     'S': [''],
-                     'T': [''],
-                     'U': [''],
-                     'V': [''],
-                     'W': [''],
-                     'X': [''],
-                     'Y': [''],
-                     'Z': [''],}
-
-
-
 PROF = {'pa': 'ਪ੍ਰੋ'}
 
 
 
-phonetics = {"hi" : hi_mr_2_en_phonetics}
-cons = {"hi" :  hi_mr_single_cons}
+phonetics = {"hi" : hi_mr_2_en_phonetics,
+             "mr" : hi_mr_2_en_phonetics,
+             "ory" : ory_2_eng_phonetics,
+             "ta" : ta_2_eng_phonetics,
+             "bn" : bn_asm_mni_2_eng_phonetics,
+             "asm" : bn_asm_mni_2_eng_phonetics,
+             "mni" : bn_asm_mni_2_eng_phonetics,
+             "pa" : pa_2_eng_phonetics,
+             "kn" : kn_2_eng_phonetics,
+             "te" : te_2_eng_phonetics,
+             "ml" : ml_2_eng_phonetics,
+             "gu" : gu_2_eng_phonetics,
+             }
+cons = {"hi" :  hi_mr_single_cons,
+       "mr" : hi_mr_single_cons,
+       "gu" : gu_single_cons,
+       "ka" : ka_single_cons,
+       "ory" : ory_single_cons,
+       "pa" : pa_single_cons}
 
 #
 # Create Moses non-breaking prefix files for Indic languages
@@ -576,7 +564,7 @@ import sys
 
 
 LOG = logging.getLogger(__name__)
-LANGS = ["hi"]
+LANGS = ["asm", "bn", "gu", "hi", "kn", "ml", "mni", "mr", "ory", "pa", "ta", "te"]
 
 def main():
   logging.basicConfig(format='%(asctime)s %(levelname)s: %(name)s:  %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
