@@ -7,7 +7,7 @@ Created on Thu Oct  3 14:42:55 2019
 """
 
 
-common_exceptions = {'Rs' :{'asm':[], # probably doesn't exist, rupees are takkas টকা
+common_exceptions = {'Rs' :{'as':[], # probably doesn't exist, rupees are takkas টকা
                              'bn':[],  # probably doesn't exist, rupees are takkas টাকা
                              'gu':['રૂ'],
                              'hi':['रु'],
@@ -15,12 +15,12 @@ common_exceptions = {'Rs' :{'asm':[], # probably doesn't exist, rupees are takka
                              'ml':[], # probably doesn't exist
                              'mni': [], # unsure if exists
                              'mr':['रु'],
-                             'ory':[], # probably doesn't exist
+                             'or':[], # probably doesn't exist
                              'pa':[], # probably doesn't exist
                              'ta':'ரூ',
                              'te':'రూ'  ,
                              'ur': []}, # Very sure doesn't exist
-                     'Dr' : {'asm':['ড'],
+                     'Dr' : {'as':['ড'],
                              'bn':['ড'],
                              'gu':['ડો', 'ડૉ'],
                              'hi':['डॉ', 'डा'],
@@ -28,12 +28,12 @@ common_exceptions = {'Rs' :{'asm':[], # probably doesn't exist, rupees are takka
                              'ml':['ഡോ'],
                              'mni': ['দা'], 
                              'mr':['डॉ', 'डा'],
-                             'ory':[], # probably doesnt exist
+                             'or':[], # probably doesnt exist
                              'pa':['ਡਾ', 'ਪ੍ਰੋ'], #  second one is actually Prof
                              'ta':[], # probably doesn't exist
                              'te':[],  # probably doesnt exist
                              'ur': []}, # Very sure doesn't exist
-                    'Mr': {'asm':[], # don't think it exists
+                    'Mr': {'as':[], # don't think it exists
                              'bn':[],  # don't think it exists
                              'gu':['શ્રી'], #  'shri' very uncommon with full stop
                              'hi':['श्री'],  #  'shri' very uncommon with full stop
@@ -41,7 +41,7 @@ common_exceptions = {'Rs' :{'asm':[], # probably doesn't exist, rupees are takka
                              'ml': ['ശ്രീ'],  #  'shri'
                              'mni': [],  # don't think it exists
                              'mr':['श्री'],  #  'shri' uncommon with full stop
-                             'ory':['ରୀ'],    # 'shri' does not actually exist with full stop in pmindia corpus
+                             'or':['ରୀ'],    # 'shri' does not actually exist with full stop in pmindia corpus
                              'pa':['ਸ੍ਰੀ'], #   'shri' uncommon with full stop
                              'ta':['திரு'],
                              'te':['శ్రీ'],
@@ -49,7 +49,7 @@ common_exceptions = {'Rs' :{'asm':[], # probably doesn't exist, rupees are takka
                      
                      
 
-others =  {'asm':['',],
+others =  {'as':['',],
              'bn':['',],
              'gu':['',],
              'hi':['टीवी',  # TV 
@@ -58,31 +58,31 @@ others =  {'asm':['',],
              'ml':['',],
              'mni': ['',], 
              'mr':['',],
-             'ory':['',],
+             'or':['',],
              'pa':['',],
              'ta':['',],
              'te':['',],
              'ur':['',]}
 
 
-# will need eng_phon rules: hi, mr ,te, ta, ory, kn, bn, asm, mni, pa, ml, gu
-# done for                  hi , mr, te, ta, X   kn, bn, asm, mni,  pa,  ml, gu
+# will need eng_phon rules: hi, mr ,te, ta, or, kn, bn, as, mni, pa, ml, gu
+# done for                  hi , mr, te, ta, X   kn, bn, as, mni,  pa,  ml, gu
 
 
 # probably don't need phon rules: ur (because they don't have full stop after phonetic spelling)
 
 
-# asm, bn, mni share same unicode
+# as, bn, mni share same unicode
 
 # hi and mr share same unicode
 
-# ory, ur, kn, ml, gu, pa, ta, te, have their own
+# or, ur, kn, ml, gu, pa, ta, te, have their own
 
 
-# we need single consonant alphabets for: hi, gu, kn, mr, ory, pa
+# we need single consonant alphabets for: hi, gu, kn, mr, or, pa
 
 
-# probably don't need for: asm, bn, mni, ur, ml, ta, te
+# probably don't need for: as, bn, mni, ur, ml, ta, te
 
 
 hi_mr_single_cons = ['क',
@@ -192,7 +192,7 @@ ka_single_cons = ['ಕ',
                              'ೞ']
 
 
-ory_single_cons = ['କ',
+or_single_cons = ['କ',
                                                                              'ଖ',
                                                                              'ଗ',
                                                                              'ଘ',
@@ -262,7 +262,7 @@ pa_single_cons = ['ਕ',
                                  'ਸ',
                                  'ਹ']
 
-ory_2_eng_phonetics ={'A': [''], # For Satya
+or_2_eng_phonetics ={'A': [''], # For Satya
                      'B': [''],
                      'C': [''],
                      'D': [''],
@@ -347,7 +347,7 @@ ta_2_eng_phonetics= { 'A': ['ஏ',],  #from wikipedia
 
 
 
-bn_asm_mni_2_eng_phonetics = {'A':['এ',],  # FROM https://bn.switch-case.com/51494160 and google translate 
+bn_as_mni_2_eng_phonetics = {'A':['এ',],  # FROM https://bn.switch-case.com/51494160 and google translate 
                              'B':['বি',],
                              'C':['সি',],
                              'D':['ডি',],
@@ -532,11 +532,11 @@ PROF = {'pa': 'ਪ੍ਰੋ'}
 
 phonetics = {"hi" : hi_mr_2_en_phonetics,
              "mr" : hi_mr_2_en_phonetics,
-             "ory" : ory_2_eng_phonetics,
+             "or" : or_2_eng_phonetics,
              "ta" : ta_2_eng_phonetics,
-             "bn" : bn_asm_mni_2_eng_phonetics,
-             "asm" : bn_asm_mni_2_eng_phonetics,
-             "mni" : bn_asm_mni_2_eng_phonetics,
+             "bn" : bn_as_mni_2_eng_phonetics,
+             "as" : bn_as_mni_2_eng_phonetics,
+             "mni" : bn_as_mni_2_eng_phonetics,
              "pa" : pa_2_eng_phonetics,
              "kn" : kn_2_eng_phonetics,
              "te" : te_2_eng_phonetics,
@@ -547,7 +547,7 @@ cons = {"hi" :  hi_mr_single_cons,
        "mr" : hi_mr_single_cons,
        "gu" : gu_single_cons,
        "ka" : ka_single_cons,
-       "ory" : ory_single_cons,
+       "or" : or_single_cons,
        "pa" : pa_single_cons}
 
 #
@@ -564,7 +564,7 @@ import sys
 
 
 LOG = logging.getLogger(__name__)
-LANGS = ["asm", "bn", "gu", "hi", "kn", "ml", "mni", "mr", "ory", "pa", "ta", "te"]
+LANGS = ["as", "bn", "gu", "hi", "kn", "ml", "mni", "mr", "or", "pa", "ta", "te"]
 
 def main():
   logging.basicConfig(format='%(asctime)s %(levelname)s: %(name)s:  %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
