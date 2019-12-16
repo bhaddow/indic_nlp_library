@@ -21,6 +21,7 @@
 # @author Anoop Kunchukuttan 
 #
 
+import argparse
 import sys, codecs, string, itertools, re
 from indicnlp import langinfo
 
@@ -707,24 +708,28 @@ if __name__ == '__main__':
         print("Usage: python normalize.py <infile> <outfile> <language> [<replace_nukta(True,False)>] [<normalize_nasals(do_nothing|to_anusvaara_strict|to_anusvaara_relaxed|to_nasal_consonants)>]") 
         sys.exit(1)
 
-    language=sys.argv[3]
-    remove_nuktas=False
-    normalize_nasals='do_nothing'
-    if len(sys.argv)>=5:
-        remove_nuktas=bool(sys.argv[4])
-    if len(sys.argv)>=6:
-        normalize_nasals=sys.argv[5]
+    parser = argparse.ArgumentParser()
+    parser.add_argument("infile", type = argparse.FileType('r', encoding="utf8"),  metavar='INFILE')
+    parser.add_argument("outfile", type = argparse.FileType('w', encoding="utf8"),  metavar='OUTFILE')
+    parser.add_argument("language", metavar='LANGUAGE')
+    parser.add_argument("replace_nukta", type=bool, default=False, nargs="?")
+    parser.add_argument("normalize_nasals", default="do_nothing", nargs="?")
+    args = parser.parse_args()
 
+    normalize_nasals = args.normalize_nasals
+    remove_nuktas = args.replace_nukta
+#
     # create normalizer
     factory=IndicNormalizerFactory()
-    normalizer=factory.get_normalizer(language,remove_nuktas,normalize_nasals)
+    normalizer=factory.get_normalizer(args.language,remove_nuktas,normalize_nasals)
 
     # DO normalization 
-    with codecs.open(sys.argv[1],'r','utf-8') as ifile:
-        with codecs.open(sys.argv[2],'w','utf-8') as ofile:
-            for line in ifile.readlines():
-                normalized_line=normalizer.normalize(line)
-                ofile.write(normalized_line)
+    #with codecs.open(sys.argv[1],'r','utf-8') as ifile:
+    #    with codecs.open(sys.argv[2],'w','utf-8') as ofile:
+    #        for line in ifile.readlines():
+    for line in args.infile:
+      normalized_line=normalizer.normalize(line)
+      args.outfile.write(normalized_line)
    
     ## gather status about normalization 
     #with codecs.open(sys.argv[1],'r','utf-8') as ifile:
